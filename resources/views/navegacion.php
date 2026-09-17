@@ -3,6 +3,9 @@ $authUser = session('auth_user');
 $logueado = is_array($authUser) && !empty($authUser['id_usuario']);
 $csrfField = csrf_field();
 ?>
+<script>
+  window.shizenSyncCartUrl = <?= json_encode(url('/php/sync_carrito.php'), JSON_UNESCAPED_SLASHES) ?>;
+</script>
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="<?= e(url('/')) ?>">
