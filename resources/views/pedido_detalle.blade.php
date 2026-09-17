@@ -29,8 +29,10 @@
         </div>
       </div>
 
-      @if(session('order_success'))
-        <p class="order-success">{{ session('order_success') }}</p>
+      @if(session('order_created'))
+        <p class="order-success" role="alert">✓ Pedido registrado correctamente. Puedes consultar su estado y código de entrega aquí.</p>
+      @elseif(session('order_success'))
+        <p class="order-success" role="alert">✓ {{ session('order_success') }}</p>
       @endif
 
       @if($order->fecha_confirmacion)
