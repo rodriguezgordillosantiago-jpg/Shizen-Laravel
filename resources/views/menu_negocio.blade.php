@@ -68,7 +68,7 @@
                   <span class="dish-price">${{ number_format((float) $dish->precio, 0, ',', '.') }}</span>
                 @endif
               </div>
-              <?php $cartDish = ['id' => (int) $dish->id, 'name' => $dish->nombre, 'price' => $precioReal, 'restaurant' => $business->nombre, 'businessId' => (int) $business->id_negocio, 'image' => $dish->imagen_url]; ?>
+              <?php $cartDish = ['id' => (int) $dish->id, 'name' => $dish->nombre, 'price' => $precioReal, 'restaurant' => $business->nombre, 'businessId' => (int) $business->id, 'image' => $dish->imagen_url]; ?>
               <button class="btn-add-cart" type="button" onclick='addToCart(<?= e(json_encode($cartDish, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP)) ?>)'>Añadir al carrito</button>
             </div>
           </div>
