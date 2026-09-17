@@ -1,10 +1,23 @@
-<div class="view" id="view-join-restaurant">
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de usuario | Shizen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/registro_base.css') }}">
+</head>
+<body>
+<div class="view active" id="view-join-restaurant">
   <div class="join-page">
     <div class="join-left" style="background:linear-gradient(135deg,#1a3a2a,#2a7a50)">
       <div class="join-left-bg" style="background-image:url('https://images.unsplash.com/photo-1572715376701-98568319fd0b?w=800&fit=crop&auto=format')">
       </div>
       <div class="join-left-content">
-        <img src="../assets/logo.png" alt="Shizen" class="join-left-logo" />
+        <img src="{{ asset('assets/logo.png') }}" alt="Shizen" class="join-left-logo" />
         <span class="join-left-badge">
           Para usuarios
         </span>
@@ -62,7 +75,7 @@
     </div>
     <div class="join-right">
       <div class="join-form-wrap">
-        <a class="join-back" href="{{ url('/') }}">
+        <a class="join-back back-link" href="{{ url('/') }}">
           ← Volver al inicio
         </a>
         <div class="progress-steps">
@@ -75,7 +88,13 @@
             2
           </div>
         </div>
-        <form method="post" action="registro_usuario.php">
+        @if ($errors->any())
+          <div class="form-server-error" role="alert">
+            {{ $errors->first() }}
+          </div>
+        @endif
+        <form method="post" action="{{ route('registro.usuario') }}">
+          @csrf
           <h2>
             ¡Regístrate ahora y empieza a comprar!
           </h2>
@@ -87,13 +106,13 @@
             <label>
               Nombre
             </label>
-            <input class="form-input" type="text" name="nombre" placeholder="Tu nombre" pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ .'-]{2,}" title="Ingresa tu nombre." required />
+            <input class="form-input" type="text" name="nombre" placeholder="Tu nombre" pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ .'\-]{2,}" title="Ingresa tu nombre." required />
           </div>
           <div class="form-group">
             <label>
               Apellido
             </label>
-            <input class="form-input" type="text" name="apellido" placeholder="Tu apellido" pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ .'-]{2,}" title="Ingresa tu apellido." required />
+            <input class="form-input" type="text" name="apellido" placeholder="Tu apellido" pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ .'\-]{2,}" title="Ingresa tu apellido." required />
           </div>
           <div class="form-group">
             <label>
@@ -145,4 +164,5 @@
     </div>
   </div>
 </div>
-
+</body>
+</html>

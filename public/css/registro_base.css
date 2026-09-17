@@ -114,6 +114,14 @@
 .join-back:hover {
   text-decoration: underline;
 }
+.join-back.back-link {
+  margin-bottom: 32px;
+}
+.join-back.back-link:hover {
+  background: #e5f4e6;
+  border-color: #7db381;
+  text-decoration: none;
+}
 a.join-back,
 a.btn-primary-full,
 a.btn-join {

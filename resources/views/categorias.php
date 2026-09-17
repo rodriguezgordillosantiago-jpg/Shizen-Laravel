@@ -43,8 +43,11 @@
             $clean = preg_replace('#^\.\.?/#', '', $rawCover);
             if (file_exists(__DIR__ . '/../' . $clean)) {
               $coverImg = $clean;
-            } elseif (file_exists(__DIR__ . '/../../shizen_movil/' . $clean)) {
-              $coverImg = '../shizen_movil/' . $clean;
+            } else {
+              $catalogPath = preg_replace('#^shizen_movil/#i', '', $clean);
+              if (file_exists(__DIR__ . '/../../public/images/catalogo/' . $catalogPath)) {
+                $coverImg = '/images/catalogo/' . $catalogPath;
+              }
             }
           }
         }
@@ -98,9 +101,9 @@
                     if (file_exists(__DIR__ . '/../' . $clean)) {
                       $imgUrl = htmlspecialchars($clean);
                     }
-                    // 2. ¿Está en shizen_movil/?
-                    elseif (file_exists(__DIR__ . '/../../shizen_movil/' . $clean) || strpos($rawImg, 'Imagenes_prueba') !== false) {
-                      $imgUrl = htmlspecialchars('../shizen_movil/' . $clean);
+                    // 2. Catálogo local migrado.
+                    elseif (file_exists(__DIR__ . '/../../public/images/catalogo/' . preg_replace('#^shizen_movil/#i', '', $clean))) {
+                      $imgUrl = htmlspecialchars('/images/catalogo/' . preg_replace('#^shizen_movil/#i', '', $clean));
                     }
                     // 3. ¿Está en la raíz de htdocs/?
                     elseif (file_exists(__DIR__ . '/../../' . $clean) || ($docRoot && file_exists($docRoot . '/' . $clean))) {

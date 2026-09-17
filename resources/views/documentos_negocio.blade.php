@@ -1,4 +1,14 @@
-<div class="view document-page">
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentos del negocio | Shizen</title>
+  <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/registro_base.css') }}">
+</head>
+<body>
+<div class="view active document-page">
   <div class="join-page">
     <div
       class="join-left"
@@ -18,7 +28,7 @@
       ></div>
       <div class="join-left-content">
         <img
-          src="../assets/logo_negocio.png"
+          src="{{ asset('assets/logo_negocio.png') }}"
           alt="Shizen"
           class="join-left-logo"
         />
@@ -70,7 +80,7 @@
     </div>
     <div class="join-right">
       <div class="join-form-wrap document-form-wrap">
-        <a class="join-back" href="registro_negocio.php"
+        <a class="join-back back-link" href="{{ route('registro.negocio') }}"
           >← Volver a los datos del negocio</a
         >
         <div class="progress-steps">
@@ -80,9 +90,10 @@
         </div>
         <form
           method="post"
-          action="documentos_negocio.php"
+          action="{{ route('registro.negocio.documentos') }}"
           enctype="multipart/form-data"
         >
+          @csrf
           <h2>Sube los documentos</h2>
           <p class="form-sub">
             Los documentos deben estar en formato PDF.
@@ -255,3 +266,5 @@
     });
   })();
 </script>
+</body>
+</html>

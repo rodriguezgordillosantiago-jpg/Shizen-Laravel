@@ -59,6 +59,9 @@
     <div id="overlays">
       @include('modales')
     </div>
+    <script>
+      window.shizenCategoryUrl = @json(url('/categorias'));
+    </script>
     <script src="js/data.js?v=20260827-1"></script>
     <script src="js/layout.js?v=20260827-1"></script>
     <script src="js/app.js?v=20260827-1"></script>

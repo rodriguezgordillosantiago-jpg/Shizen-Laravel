@@ -3,6 +3,16 @@
         Options -MultiViews -Indexes
     </IfModule>
 
+    <IfModule mod_expires.c>
+        ExpiresActive On
+        ExpiresByType image/avif "access plus 1 month"
+        ExpiresByType image/webp "access plus 1 month"
+        ExpiresByType image/png "access plus 1 month"
+        ExpiresByType image/jpeg "access plus 1 month"
+        ExpiresByType image/gif "access plus 1 month"
+        ExpiresByType image/svg+xml "access plus 1 month"
+    </IfModule>
+
     RewriteEngine On
 
     # Handle Authorization Header
@@ -12,6 +22,16 @@
     # Handle X-XSRF-Token Header
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # Send legacy PHP registration URLs through Laravel instead of executing
+    # the obsolete files under public/php.
+    RewriteRule ^php/registro_usuario\.php$ index.php [L]
+    RewriteRule ^php/registro_negocio\.php$ index.php [L]
+    RewriteRule ^php/registro_repartidor\.php$ index.php [L]
+    RewriteRule ^php/categorias\.php$ index.php [L]
+    RewriteRule ^php/promociones\.php$ index.php [L]
+    RewriteRule ^php/login\.php$ index.php [L]
+    RewriteRule ^auth/login\.php$ index.php [L]
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d

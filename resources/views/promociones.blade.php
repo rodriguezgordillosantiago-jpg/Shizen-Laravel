@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1.0"
     />
     <title>Promociones | Shizen</title>
-    <base href="../" />
+    <base href="{{ asset('/') }}" />
     <link
       rel="preconnect"
       href="https://fonts.googleapis.com"
@@ -33,12 +33,14 @@
     />
   </head>
   <body>
-    <header id="navigation"></header>
+    <header id="navigation">
+      @include('navegacion')
+    </header>
     <main id="app-content">
       <section class="promos-page">
         <div class="page-header">
           <button
-            class="btn-back"
+            class="btn-back back-link"
             onclick="window.location.href = '{{ url('/') }}'"
             aria-label="Volver"
           >
@@ -62,9 +64,14 @@
         </div>
       </section>
     </main>
-    <div id="overlays"></div>
+    <div id="overlays">
+      @include('modales')
+    </div>
     <script src="js/data.js"></script>
-    <script src="js/layout.js?v=20260816-2"></script>
+    <script>
+      window.shizenLayoutReady = Promise.resolve();
+      window.DB_PROMOS = @json($promotions ?? []);
+    </script>
     <script src="js/app.js?v=20260816-4"></script>
   </body>
 </html>

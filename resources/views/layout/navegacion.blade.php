@@ -3,7 +3,6 @@
     <a class="nav-logo" href="index.html">
       <img src="assets/logo.png" alt="Shizen" />
     </a>
-    <div class="nav-colombia">Colombia</div>
     <div class="nav-right">
       <button
         class="btn-ingreso"
@@ -41,24 +40,24 @@
     >
       &#128272; Iniciar sesión
     </button>
-    <a class="mobile-menu-btn" href="php/promociones.php">
+    <a class="mobile-menu-btn" href="{{ url('/promociones') }}">
       &#127881; Promociones
     </a>
     <a
       class="mobile-menu-btn"
-      href="php/registro_usuario.php"
+      href="{{ url('/registro-usuario') }}"
     >
       &#128100; Para usuarios
     </a>
     <a
       class="mobile-menu-btn"
-      href="php/registro_negocio.php"
+      href="{{ url('/registro-negocio') }}"
     >
       &#127978; Para negocios
     </a>
     <a
       class="mobile-menu-btn"
-      href="php/registro_repartidor.php"
+      href="{{ url('/registro-repartidor') }}"
     >
       &#128693; Para repartidores
     </a>

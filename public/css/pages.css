@@ -38,6 +38,12 @@
   background: #3a8c3f;
   color: #fff;
 }
+.btn-back.back-link {
+}
+.btn-back.back-link:hover {
+  background: #e5f4e6;
+  color: #2d6a31;
+}
 .page-header h2 {
   font-size: 1.7rem;
   font-weight: 800;
@@ -262,6 +268,13 @@
 .cat-hero-back:hover {
   background: rgba(0, 0, 0, 0.55);
 }
+.cat-hero-back.back-link {
+  backdrop-filter: none;
+}
+.cat-hero-back.back-link:hover {
+  background: #e5f4e6;
+  color: #2d6a31;
+}
 .cat-hero-info {
   position: absolute;
   bottom: 20px;
@@ -346,9 +359,14 @@
 .dish-img {
   height: 160px;
   background-color: #e8f5e9;
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
   position: relative;
+}
+.dish-img-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 .dish-badge {
   position: absolute;
@@ -386,6 +404,12 @@
   font-size: 0.83rem;
   color: #888;
   margin-bottom: 8px;
+}
+.dish-description {
+  color: #68756a;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin: 8px 0 12px;
 }
 .dish-meta {
   display: flex;

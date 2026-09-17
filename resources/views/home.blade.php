@@ -13,7 +13,7 @@
     <div class="hero-pills">
       <a
         class="hero-pill pill-outline"
-        href="php/promociones.php"
+        href="{{ url('/promociones') }}"
       >
         Ver promociones 🎉
       </a>
@@ -81,15 +81,36 @@
     aria-labelledby="category-band-title"
   >
     <div class="category-band-inner">
-      <h2 id="category-band-title">¿Qué quieres hoy?</h2>
+      <h2 id="category-band-title">¿Qué quieres comer hoy?</h2>
       <p class="category-band-sub">
-        Elige una categoría y descubre lo mejor de la cocina
-        vegana colombiana.
+        Explora negocios y categorías para encontrar tu próxima comida
+        vegana favorita.
       </p>
+      <h3 class="category-subtitle">Categorías</h3>
+      <p class="category-section-text">Elige una categoría y descubre lo mejor de la cocina vegana colombiana.</p>
       <div
         class="category-scroll"
         id="categoryScroll"
       ></div>
+      <div class="business-inline" aria-labelledby="business-band-title">
+        <h3 id="business-band-title">Negocios mejor calificados</h3>
+        <p class="business-band-sub">Descubre los favoritos de nuestra comunidad.</p>
+        <div class="business-scroll">
+          @forelse ($businesses as $business)
+            <article class="business-card">
+              <a class="business-card-link" href="{{ route('business.menu', $business->id) }}">
+                <img src="{{ $business->logo_url }}" alt="Logo de {{ $business->nombre }}" loading="lazy" decoding="async">
+                <span class="business-card-info">
+                  <strong>{{ $business->nombre }}</strong>
+                  <span class="business-rating">★ {{ number_format($business->rating, 1) }}</span>
+                </span>
+              </a>
+            </article>
+          @empty
+            <p>No hay negocios disponibles todavía.</p>
+          @endforelse
+        </div>
+      </div>
     </div>
   </section>
   <section class="join-section" id="registro" tabindex="-1">
@@ -124,7 +145,7 @@
           </p>
           <a
             class="btn-join"
-            href="php/registro_usuario.php"
+            href="{{ url('/registro-usuario') }}"
           >
             Crear cuenta
           </a>
@@ -154,7 +175,7 @@
           </p>
           <a
             class="btn-join"
-            href="php/registro_negocio.php"
+            href="{{ url('/registro-negocio') }}"
           >
             Empezar registro
           </a>
@@ -183,7 +204,7 @@
           </p>
           <a
             class="btn-join"
-            href="php/registro_repartidor.php"
+            href="{{ url('/registro-repartidor') }}"
           >
             ¡Regístrate ahora!
           </a>

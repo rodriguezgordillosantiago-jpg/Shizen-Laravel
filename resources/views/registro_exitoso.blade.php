@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registro completado | Shizen</title>
-  <link rel="stylesheet" href="../css/styles.css" />
-  <link rel="stylesheet" href="../css/registro_base.css" />
+  <link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
+  <link rel="stylesheet" href="{{ asset('css/registro_base.css') }}" />
 </head>
 <body>
   <main>
@@ -15,7 +15,7 @@
           <div class="success-icon">🎉</div>
           <h3>Registro completado</h3>
           <p>Recibimos tu solicitud y revisaremos tus documentos. Te contactaremos pronto con los siguientes pasos.</p>
-          <a class="btn-primary-full" href="../index.html">Volver al inicio</a>
+          <a class="btn-primary-full" href="{{ url('/') }}">Volver al inicio</a>
         </div>
       </div>
     </div>

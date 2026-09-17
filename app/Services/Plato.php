@@ -17,7 +17,7 @@ class Plato {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare('
             SELECT
-                m.id,
+                m.id_menu_item AS id,
                 m.nombre        AS plato_nombre,
                 m.descripcion   AS plato_desc,
                 m.precio,
@@ -25,8 +25,8 @@ class Plato {
                 m.imagen_url,
                 COALESCE(n.nombre, \'Restaurante Shizen\') AS negocio_nombre
             FROM menu_items m
-            LEFT JOIN negocios n ON m.negocio_id = n.id
-            WHERE m.categoria_id = ?
+            LEFT JOIN negocios n ON m.id_negocio = n.id_negocio
+            WHERE m.id_categoria = ?
             ORDER BY RAND()
         ');
         $stmt->execute([$categoriaId]);
@@ -38,16 +38,15 @@ class Plato {
         $pdo = Database::getConnection();
         $stmt = $pdo->query('
             SELECT 
-                p.id,
+                p.id_promocion AS id,
                 p.nombre AS promo_nombre,
                 p.descripcion AS promo_desc,
                 p.imagen_url,
                 COALESCE(n.nombre, \'Restaurante Shizen\') AS negocio_nombre
             FROM promociones p
-            LEFT JOIN negocios n ON p.negocio_id = n.id
+            LEFT JOIN negocios n ON p.id_negocio = n.id_negocio
             WHERE p.activo = 1
         ');
         return $stmt->fetchAll();
     }
 }
-

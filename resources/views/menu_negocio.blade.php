@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ $business->nombre }} | Shizen</title>
+  <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/nav.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/pages.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/modals.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/business-menu.css?v=20260912-1') }}">
+</head>
+<body>
+  <header>@include('navegacion')</header>
+  <main class="business-menu-page">
+    <a class="menu-back back-link" href="{{ url('/') }}">← Volver a negocios</a>
+    <section class="business-menu-header">
+      <img src="{{ $business->logo_url }}" alt="Logo de {{ $business->nombre }}">
+      <div>
+        <h1>{{ $business->nombre }}</h1>
+        <p class="business-rating">★ {{ number_format($business->rating, 1) }} · Menú disponible</p>
+      </div>
+      @if (session('auth_user'))
+        <form method="post" action="{{ route('business.favorite', $business->id) }}" class="favorite-form">
+          @csrf
+          <button class="favorite-button {{ $business->is_favorite ? 'is-favorite' : '' }}" type="submit" aria-label="{{ $business->is_favorite ? 'Quitar de favoritos' : 'Agregar a favoritos' }}">
+            {{ $business->is_favorite ? '♥' : '♡' }}
+          </button>
+        </form>
+      @else
+        <a class="favorite-button" href="{{ route('login', ['redirect' => request()->getRequestUri()]) }}" aria-label="Inicia sesión para agregar a favoritos" title="Inicia sesión para agregar a favoritos">♡</a>
+      @endif
+    </section>
+    <div class="items-grid">
+      @forelse ($dishes as $dish)
+        <?php
+          $hasPromo = !empty($dish->on_promo) && !empty($dish->precio_promocion);
+          $precioReal = $hasPromo ? (float) $dish->precio_promocion : (float) $dish->precio;
+        ?>
+        <article class="dish-card">
+          <div class="dish-img">
+            <img class="dish-img-image" src="{{ $dish->imagen_url }}" alt="{{ $dish->nombre }}" loading="lazy" decoding="async">
+            <span class="dish-tag-badge">Vegano</span>
+            @if ($hasPromo)
+              <span class="dish-promo-badge" style="position:absolute;top:10px;left:10px;background:#ea580c;color:#fff;font-weight:700;padding:4px 8px;border-radius:6px;font-size:11px;box-shadow:0 2px 6px rgba(234,88,12,.5)">🔥 PROMOCIÓN</span>
+            @endif
+            @if (session('auth_user'))
+              <form method="post" action="{{ route('business.favorite', $business->id) }}" class="dish-favorite-form">
+                @csrf
+                <button class="favorite-button dish-favorite-button {{ $business->is_favorite ? 'is-favorite' : '' }}" type="submit" aria-label="{{ $business->is_favorite ? 'Quitar restaurante de favoritos' : 'Agregar restaurante a favoritos' }}">
+                  {{ $business->is_favorite ? '♥' : '♡' }}
+                </button>
+              </form>
+            @else
+              <a class="favorite-button dish-favorite-button" href="{{ route('login', ['redirect' => request()->getRequestUri()]) }}" aria-label="Inicia sesión para agregar el restaurante a favoritos" title="Inicia sesión para agregar el restaurante a favoritos">♡</a>
+            @endif
+          </div>
+          <div class="dish-body">
+            <div class="dish-name">{{ $dish->nombre }}</div>
+            <div class="dish-restaurant">{{ $dish->categoria_nombre ?: 'Especialidad Shizen' }}</div>
+            <p class="dish-description">{{ $dish->descripcion }}</p>
+            <div class="dish-price-row">
+              <div class="dish-prices">
+                @if ($hasPromo)
+                  <span class="dish-price" style="color:#ea580c">${{ number_format((float) $dish->precio_promocion, 0, ',', '.') }}</span>
+                  <span style="font-size:12px;color:#9ca3af;text-decoration:line-through;margin-left:6px">${{ number_format((float) $dish->precio, 0, ',', '.') }}</span>
+                @else
+                  <span class="dish-price">${{ number_format((float) $dish->precio, 0, ',', '.') }}</span>
+                @endif
+              </div>
+              <?php $cartDish = ['id' => (int) $dish->id, 'name' => $dish->nombre, 'price' => $precioReal, 'restaurant' => $business->nombre, 'businessId' => (int) $business->id_negocio, 'image' => $dish->imagen_url]; ?>
+              <button class="btn-add-cart" type="button" onclick='addToCart(<?= e(json_encode($cartDish, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP)) ?>)'>Añadir al carrito</button>
+            </div>
+          </div>
+        </article>
+      @empty
+        <p>No hay platos disponibles para este negocio.</p>
+      @endforelse
+    </div>
+  </main>
+  <div id="overlays">@include('modales')</div>
+  <script src="{{ asset('js/app.js') }}"></script>
+</body>
+</html>

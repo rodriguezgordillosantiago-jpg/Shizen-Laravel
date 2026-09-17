@@ -1,4 +1,17 @@
-<div class="view" id="view-join-commerce">
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de negocio | Shizen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/registro_base.css') }}">
+</head>
+<body>
+<div class="view active" id="view-join-commerce">
   <div class="join-page">
     <div
       class="join-left"
@@ -18,7 +31,7 @@
       ></div>
       <div class="join-left-content">
         <img
-          src="../assets/logo_negocio.png"
+          src="{{ asset('assets/logo_negocio.png') }}"
           alt="Shizen"
           class="join-left-logo"
         />
@@ -62,7 +75,7 @@
     </div>
     <div class="join-right">
       <div class="join-form-wrap">
-        <a class="join-back" href="{{ url('/') }}">
+        <a class="join-back back-link" href="{{ url('/') }}">
           ← Volver al inicio
         </a>
         <div class="progress-steps">
@@ -74,9 +87,10 @@
         </div>
         <form
           method="post"
-          action="registro_negocio.php"
+          action="{{ url('/registro-negocio') }}"
           enctype="multipart/form-data"
         >
+          @csrf
           <h2>Registra tu negocio</h2>
           <p class="form-sub">
             Cuéntanos sobre tu negocio.
@@ -89,7 +103,7 @@
               type="text"
               name="nombre"
               placeholder="Ej. Plaza verde"
-              pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ .'-]{2,}"
+              pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ .'\-]{2,}"
               title="Ingresa el nombre del comercio."
               required
             />

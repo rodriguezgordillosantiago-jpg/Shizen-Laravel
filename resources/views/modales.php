@@ -1,11 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
-    session_start();
-}
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-$csrfToken = htmlspecialchars((string)($_SESSION['csrf_token'] ?? ''), ENT_QUOTES, 'UTF-8');
+/* CSRF is handled by Laravel's csrf_field() below */
 ?>
 <div
   class="modal-overlay"
@@ -43,12 +37,45 @@ $csrfToken = htmlspecialchars((string)($_SESSION['csrf_token'] ?? ''), ENT_QUOTE
     </div>
   </div>
 </div>
+  <?php if (session('auth_user')): $profileUser = session('auth_user'); ?>
+  <div class="modal-overlay" id="profileModal" onclick="handleProfileOverlayClick(event)">
+    <div class="modal-card profile-card">
+      <button class="modal-close" type="button" onclick="closeProfileModal()" aria-label="Cerrar">×</button>
+      <div class="modal-title">Mis datos</div>
+      <p class="modal-sub">Consulta la información de tu cuenta Shizen.</p>
+      <?php if (session('profile_success')): ?><p class="profile-success"><?= e(session('profile_success')) ?></p><?php endif; ?>
+      <form method="post" action="<?= e(route('profile.update')) ?>">
+        <?= csrf_field() ?>
+        <div class="profile-fields">
+          <input class="modal-input profile-field" name="nombre" value="<?= e($profileUser['nombre'] ?? '') ?>" placeholder="Nombre" readonly required>
+          <input class="modal-input profile-field" name="apellido" value="<?= e($profileUser['apellido'] ?? '') ?>" placeholder="Apellido" readonly required>
+          <input class="modal-input profile-wide profile-field" name="direccion" value="<?= e($profileUser['direccion'] ?? '') ?>" placeholder="Dirección" readonly>
+          <input class="modal-input profile-field" name="ciudad" value="<?= e($profileUser['ciudad'] ?? '') ?>" placeholder="Ciudad" readonly>
+        </div>
+        <?php if (isset($errors) && $errors->any()): ?><p class="login-error"><?= e($errors->first()) ?></p><?php endif; ?>
+        <button class="btn-modal-primary" id="profileEditButton" type="button" onclick="enableProfileEditing()">Editar datos</button>
+        <button class="btn-modal-primary profile-save-button" id="profileSaveButton" type="submit" hidden>Guardar cambios</button>
+      </form>
+      <form class="profile-logout-form" method="post" action="<?= e(route('logout')) ?>">
+        <?= csrf_field() ?>
+        <button class="profile-logout-button" type="submit">Cerrar sesión</button>
+      </form>
+    </div>
+  </div>
+  <?php endif; ?>
+  <button class="chat-bubble" type="button" onclick="toggleChat()" aria-label="Abrir chat">
+    <img src="<?= e(asset('assets/shizen-chat-leaf.png')) ?>" alt="">
+  </button>
+  <div class="chat-panel" id="chatPanel" aria-hidden="true">
+    <div class="chat-header"><strong>Ayuda Shizen</strong><button type="button" onclick="toggleChat()" aria-label="Cerrar chat">×</button></div>
+    <div class="chat-body"><p>¡Hola! ¿En qué podemos ayudarte?</p><button type="button" onclick="this.textContent='Un asesor te responderá pronto.'">Hablar con un asesor</button></div>
+  </div>
 <div class="modal-overlay" id="cartModal" onclick="handleCartOverlayClick(event)">
   <div class="modal-card cart-card">
     <button class="modal-close" type="button" onclick="closeCart()" aria-label="Cerrar">×</button>
     <div class="modal-title">Tu carrito</div>
     <div id="cartItems" class="cart-items"></div>
-    <div class="cart-total-row">
+    <div class="cart-total-row" id="cartTotalRow">
       <span>Total</span>
       <strong id="cartTotal">$0</strong>
     </div>
@@ -62,9 +89,9 @@ $csrfToken = htmlspecialchars((string)($_SESSION['csrf_token'] ?? ''), ENT_QUOTE
     <button class="modal-close" type="button" onclick="closeCheckout()" aria-label="Cerrar">×</button>
     <div class="modal-title">Datos de entrega</div>
     <p class="modal-sub">Completa tus datos para registrar el pedido.</p>
-    <form method="post" action="php/registrar_pedido.php" onsubmit="prepareCheckout(event)">
+    <form method="post" action="<?= e(route('orders.store')) ?>" onsubmit="prepareCheckout(event)">
       <input type="hidden" name="items" id="checkoutItems">
-      <input type="hidden" name="csrf_token" value="<?= $csrfToken ?>">
+      <?= csrf_field() ?>
       <div class="checkout-fields">
         <input class="modal-input" name="nombre" placeholder="Nombre" required maxlength="60">
         <input class="modal-input" name="apellido" placeholder="Apellido" required maxlength="60">
